@@ -12,8 +12,7 @@ app.get("/api/status/healthz", (req, res) => {
 
 app.get("/api/status/readyz", (req, res) => {
   res.status(200).json({ status: "ready" });
-})
-
+}) 
 
 const proxies = {}
 const agentProxies = {};

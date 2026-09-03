@@ -17,6 +17,12 @@ spec:
       containers:
       - image:  ai-orchestration
         name:  ai-server
+        env:
+        - name: MISTRAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-secret
+              key: MISTRAL_API_KEY
         resources:
           requests:
             cpu: "250m"

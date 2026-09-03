@@ -3,6 +3,8 @@ apiVersion: skaffold/v4beta14
 kind: Config
 
 build:
+  tagPolicy:
+    sha256: {}
   artifacts:
   - image: ai-orchestration
     context: ai-orchestration
@@ -16,16 +18,25 @@ build:
     context: sandbox/agent
     docker:
       dockerfile: dockerfile
+    sync:
+      infer:
+        - "**/*.js"
   
   - image: router
     context: sandbox/router
     docker:
       dockerfile: dockerfile
+    sync:
+      infer:
+        - "**/*.js"
   
   - image: sandbox
     context: sandbox/server
     docker:
       dockerfile: dockerfile
+    sync:
+      infer:
+        - "**/*.js"
 
   - image: template
     context: sandbox/template

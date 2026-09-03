@@ -7,7 +7,12 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    allowedHosts: true
+    allowedHosts: true,
+    // BY AI START
+    hmr: {
+      clientPort: 80
+    }
+    // BY AI END
   },
   watch: {
     usePolling: true,
