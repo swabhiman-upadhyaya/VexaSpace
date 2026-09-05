@@ -3,14 +3,14 @@ import { tool } from "langchain"
 import * as z from "zod"
 
 export const listFiles = tool(
-  async ({ }) => {
+  async ({ }, config) => {
 
     console.log("=============================")
     console.log("Using list files tool")
     console.log("=============================")
 
     // BY AI START
-    const response = await axios.get("http://sandbox-service-01a0533f-55f1-7798-a51d-fb0b79050721:3000/list-files");
+    const response = await axios.get(`http://sandbox-service-${config.configurable.projectId}:3000/list-files`);
     // BY AI END
 
     console.log("=============================")
@@ -30,14 +30,14 @@ export const listFiles = tool(
 )
 
 export const readFiles = tool(
-  async ({ files }) => {
+  async ({ files }, config) => {
 
     console.log("=============================")
     console.log("Using read files tool", files)
     console.log("=============================")
 
     // BY AI START
-    const response = await axios.get(`http://sandbox-service-01a0533f-55f1-7798-a51d-fb0b79050721:3000/read-files?files=` + files.join(","));
+    const response = await axios.get(`http://sandbox-service-${config.configurable.projectId}:3000/read-files?files=` + files.join(","));
     // BY AI END
 
     console.log("=============================")
@@ -59,14 +59,14 @@ export const readFiles = tool(
 )
 
 export const updateFiles = tool(
-  async ({ files }) => {
+  async ({ files }, config) => {
 
     console.log("=============================")
     console.log("Using update files tool", files)
     console.log("=============================")
 
     // BY AI START
-    const response = await axios.patch(`http://sandbox-service-01a0533f-55f1-7798-a51d-fb0b79050721:3000/update-files`, {
+    const response = await axios.patch(`http://sandbox-service-${config.configurable.projectId}:3000/update-files`, {
       updates: files
     });
     // BY AI END
@@ -83,7 +83,7 @@ export const updateFiles = tool(
   },
   {
     name: "update_files",
-    description: "Update or create files in the project. Use this tool after reading the relevant files and determining the exact changes required by the user's request. After successfully updating the requested files, consider the task complete.",
+    description: "Update or create files in the project. Use this tool only after reading the relevant files, tracing the logic end-to-end for correctness (initial states, loop guards, closures, event defaults), and determining the exact changes required. This tool returning success only confirms the files were written to disk — it does not confirm the logic is correct. After a successful call, verify the change against the user's request before replying.",
     schema: z.object({
       files: z.array(z.object({
         file: z.string().describe("The absolute path of the file to update"),
